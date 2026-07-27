@@ -259,7 +259,8 @@
                 <span class="badge">BONTEN</span>
                 <h2 class="char-title">Bonten-Đi Biển</h2>
                 <div class="char-desc">
-                    Tokyo nắng 40°C, Bonten kéo nhau ra bãi biển riêng tư. Sanzu đòi xịt nước cát, Ran đòi bôi kem chống nắng, còn Mikey thì đói bánh Taiyaki...
+                    Tháng Sáu, Tokyo như một cái lò thiêu khổng lồ với cái nóng chạm ngưỡng 40 độ C. Sức nóng ấy khủng khiếp đến mức có thể nung chảy cả sự kiên nhẫn của những kẻ tàn nhẫn nhất. Tại căn cứ của Bonten, bầu không khí ngột ngạt đến mức gã cuồng sát Sanzu Haruchiyo cũng chẳng buồn lau máu trên thanh katana, còn Kokonoi Hajime thì liên tục than vãn vì cái máy lạnh triệu đô vừa mới đổ bệnh. Em – {{user}}, nữ cốt cán duy nhất kiêm “trọng tài” bất đắc dĩ cho mọi cuộc xung đột của tổ chức – dứt khoát đứng dậy: "Đi biển đi. Không đi thì tao sẽ đốt cái văn phòng này bằng xăng, thay vì để nó tự cháy vì nắng."
+                    Một lời nói mà không cần phải nói nhiều, ba tiếng sau chiếc Limousine bọc thép chống đạn sang trọng của Bonten đã lăn bánh hướng thẳng về phía bãi biển riêng tư được Koko bao trọn gói. Khi đến nơi, cửa xe vừa mở ra, luồng gió biển mặn mòi tràn vào khoang xe, và cùng với đó là sự hỗn loạn quen thuộc của Bonten.
                 </div>
             </div>
 
@@ -267,17 +268,17 @@
 
             <div class="input-group">
                 <label>Tên của bạn</label>
-                <input type="text" id="user-name" placeholder="Ví dụ: Linh Khánh">
+                <input type="text" id="user-name" placeholder="Ví dụ: Zenvar">
             </div>
 
             <div class="input-group">
                 <label>Ngoại hình / Đặc điểm</label>
-                <textarea id="user-appearance" rows="2" placeholder="Ví dụ: Nữ, tóc đen dài, mặc váy đi biển màu trắng..."></textarea>
+                <textarea id="user-appearance" rows="2" placeholder="Ví dụ: Nữ, tóc đen dài,..."></textarea>
             </div>
 
             <div class="input-group">
                 <label>Tính cách</label>
-                <textarea id="user-personality" rows="2" placeholder="Ví dụ: Bình tĩnh, đanh đá, là trọng tài của băng..."></textarea>
+                <textarea id="user-personality" rows="2" placeholder="Ví dụ: Hiền Lành, Cọc cằn,..."></textarea>
             </div>
 
             <button class="btn-submit" onclick="openApiModal()">Bắt đầu trò chuyện</button>
@@ -321,18 +322,22 @@ Bạn là "Bonten Simulator Engine". Bạn sẽ nhập vai đồng thời 8 cố
 
         const FIRST_MESSAGE = `Tháng Sáu, Tokyo nắng 40°C. Cả băng Bonten kéo ra bãi biển riêng của Koko.
 
-**Sanzu:** "{{user}}!! Nhìn xem tao chuẩn bị gì cho mày nè! Thử một phát không?!" *Tay lăm lăm 2 cây súng nước pha cát*
+**Sanzu:** *Lao ra đầu tiên, phấn khích đến điên dại, trên tay cầm hai cây súng phun nước cỡ đại của trẻ em chứa đầy nước biển pha cát, gào lên* "{{user}}!! Nhìn xem tao chuẩn bị gì cho mày nè! Thử một phát không?!"
 
-**Kakucho:** *Túm cổ áo Sanzu lôi ra sau* "Mày bớt điên lại cho tao nhờ."
+**Kakucho:** *Thở dài bất lực, một tay xách chiếc ba lô kéo nặng trĩu của {{user}}, tay còn lại túm cổ áo Sanzu lôi xềnh xệch ra phía sau như lôi con cún ngáo đá* "Mày bớt điên lại cho tao nhờ. Đừng có ám {{user}} nữa."
 
-**Ran:** *Thong thả vươn vai, đeo kính râm* "{{user}} đáng yêu ơi, em có muốn bôi kem chống nắng giúp anh không?"
+**Ran:** *Bước xuống từ trên xe một cách thong thả, lười biếng. Mái tóc vuốt gọn gàng, đeo kính râm thời thượng, áo sơ mi phanh ngực phong trần. Anh vươn vai rồi quay sang nhìn {{user}} bằng ánh mắt trìu mến đầy nhả nhớt* "{{user}} đáng yêu ơi, em có muốn bôi kem chống nắng giúp anh không? Lưng anh hơi khó đánh tới~"
 
-**Rindo:** *Ôm phao thiên nga nhăn nhó* "Anh im đi Ran. {{user}}, tí đi lướt sóng với tao."
+**Rindo:** *Đi ngay phía sau, vừa ôm cái phao bơi hình con thiên nga hồng do bị Ran ép cầm, nhăn nhó cằn nhằn* "Anh im đi Ran. Nhìn anh giống mấy bộ xương khô phơi nắng lắm rồi đấy." *Quay sang {{user}}* "{{user}}, tí nữa đi lướt sóng với tao, mặc kệ lão già này đi."
 
-**Mikey:** *Mặc quần đùi taiyaki, ôm phao hồng lờ đờ nhìn bạn* "{{user}}, tôi đói. Taiyaki của tôi đâu?"
+**Kokonoi:** *Bước xuống cuối cùng, lạch bạch đi dưới chiếc ô che nắng khổng lồ do đàn em che chắn, tay bấm iPad tanh tách* "Nắng thế này hỏng hết da mười mấy triệu đô của tao mất."
+
+**Takeomi & Mochi:** *Hai ông chú Gen X đã yên vị trên chiếc ghế bành từ bao giờ, miệng ngậm điếu thuốc, tay cầm lon bia, mắt lim dim tận hưởng cuộc sống.*
+
+**Mikey:** *Vị vua của Bonten bước ra cuối cùng. Anh mặc chiếc quần đùi họa tiết bánh taiyaki, mắt lờ đờ ngái ngủ, tay ôm khư khư cái phao bơi trẻ em hình tròn màu hồng phấn. Mikey nhìn {{user}}, giọng phẳng lặng như mặt hồ không gió* "{{user}}, tôi đói. Taiyaki của tôi đâu?"
 
 ---
-📊 [❤️ Độ thân mật chung: 40% | 💭 Trạng thái Bonten: Vừa đến bãi biển, nháo nhào]`;
+📊 [❤️ Độ thân mật chung: 0% | 💭 Trạng thái Bonten: Vừa đến bãi biển, nháo nhào]`;
 
         let apiKey = "";
         let chatHistory = [];
