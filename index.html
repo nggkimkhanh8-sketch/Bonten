@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonten Simulator - Kat Style</title>
+    <style>
+        :root {
+            --bg-color: #FAF8F5;
+            --primary-pink: #EE98B2;
+            --primary-hover: #E37B9A;
+            --card-bg: #FFFFFF;
+            --text-main: #333333;
+            --text-sub: #666666;
+            --chat-user: #EE98B2;
+            --chat-bot: #F0F0F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Avatar & Header */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar-box {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-pink);
+            margin: 0 auto 12px;
+            overflow: hidden;
+            background: #eee;
+        }
+
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #FFE3EC;
+            color: #D6336C;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 6px;
+        }
+
+        .char-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 8px;
+        }
+
+        .char-desc {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            background: #FAF8F5;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        /* Form section */
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 20px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 14px;
+            background: var(--primary-pink);
+            border-radius: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-bottom: 4px;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #E5E5E5;
+            border-radius: 12px;
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+            background: #FAF8F5;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--primary-pink);
+            background: #FFF;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+        }
+
+        /* API Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: white;
+            padding: 24px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 360px;
+            text-align: center;
+        }
+
+        .modal h3 { margin-bottom: 10px; font-size: 16px; }
+        .modal p { font-size: 12px; color: #666; margin-bottom: 15px; }
+
+        /* Chat Screen */
+        .chat-screen {
+            display: none;
+            flex-direction: column;
+            height: 520px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+
+        .msg.user {
+            align-self: flex-end;
+            background: var(--chat-user);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg.bot {
+            align-self: flex-start;
+            background: var(--chat-bot);
+            color: #222;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .chat-input-area button {
+            padding: 10px 18px;
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="setup-screen">
+            <div class="header">
+                <div class="avatar-box">
+                    <img src="https://i.pinimg.com/564x/8a/80/75/8a80753e206f658f331908b1a2082269.jpg" alt="Mikey Bonten">
+                </div>
+                <span class="badge">BONTEN BÃI BIỂN</span>
+                <h2 class="char-title">Bonten Simulator</h2>
+                <div class="char-desc">
+                    Tokyo nắng 40°C, Bonten kéo nhau ra bãi biển riêng tư. Sanzu đòi xịt nước cát, Ran đòi bôi kem chống nắng, còn Mikey thì đói bánh Taiyaki...
+                </div>
+            </div>
+
+            <div class="section-title">Thông tin của bạn</div>
+
+            <div class="input-group">
+                <label>Tên của bạn</label>
+                <input type="text" id="user-name" placeholder="Ví dụ: Linh Khánh">
+            </div>
+
+            <div class="input-group">
+                <label>Ngoại hình / Đặc điểm</label>
+                <textarea id="user-appearance" rows="2" placeholder="Ví dụ: Nữ, tóc đen dài, mặc váy đi biển màu trắng..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Tính cách</label>
+                <textarea id="user-personality" rows="2" placeholder="Ví dụ: Bình tĩnh, đanh đá, là trọng tài của băng..."></textarea>
+            </div>
+
+            <button class="btn-submit" onclick="openApiModal()">Bắt đầu trò chuyện</button>
+        </div>
+
+        <div id="chat-screen" class="chat-screen">
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input-area">
+                <input type="text" id="user-msg" placeholder="Nhập tin nhắn..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Gửi</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="api-modal">
+        <div class="modal">
+            <h3>Chào mừng đến với Bot</h3>
+            <p>Vui lòng nhập API Key Gemini của bạn để bắt đầu trò chuyện. Key được lưu trực tiếp trên trình duyệt của bạn.</p>
+            <div class="input-group">
+                <input type="password" id="api-key" placeholder="Dán API Key Gemini vào đây...">
+            </div>
+            <button class="btn-submit" onclick="startChat()">Xác nhận & Khởi tạo</button>
+        </div>
+    </div>
+
+    <script>
+        // SYSTEM INSTRUCTION DÀNH CHO BONTEN
+        const SYSTEM_INSTRUCTION = `
+Bạn là "Bonten Simulator Engine". Bạn sẽ nhập vai đồng thời 8 cốt cán của Bonten: Mikey (Boss), Sanzu, Kakucho, Ran, Rindo, Koko, Takeomi, Mochi.
+- Mikey gọi user là "{{user}}", xưng "Tôi/Tao". Mikey lờ đờ, thích Taiyaki.
+- Sanzu cuồng loạn, sùng bái Mikey, hay cà khịa. Xưng "Tao - Mày".
+- Kakucho nghiêm túc, như bảo mẫu. Xưng "Tôi/Tao".
+- Ran điệu đà, cợt nhả. Xưng "Anh" - Gọi "Em/Bé cưng/{{user}}".
+- Rindo cọc cần. Với Ran BẮT BUỘC xưng "Em" - Gọi "Anh Ran/Anh Hai".
+- Koko tính toán tiền bạc. Xưng "Tao - Mày".
+- Quy tắc xưng hô: Tất cả phải gọi Mikey là "Boss" hoặc "Mikey" và xưng "Tôi/Tao". Nam cốt cán gọi nhau là "Mày - Tao".
+- Cuối mỗi tin nhắn PHẢI kèm:
+---
+📊 [❤️ Độ thân mật chung: X% | 💭 Trạng thái Bonten: <mô tả ngắn>]
+        `;
+
+        const FIRST_MESSAGE = `Tháng Sáu, Tokyo nắng 40°C. Cả băng Bonten kéo ra bãi biển riêng của Koko.
+
+**Sanzu:** "{{user}}!! Nhìn xem tao chuẩn bị gì cho mày nè! Thử một phát không?!" *Tay lăm lăm 2 cây súng nước pha cát*
+
+**Kakucho:** *Túm cổ áo Sanzu lôi ra sau* "Mày bớt điên lại cho tao nhờ."
+
+**Ran:** *Thong thả vươn vai, đeo kính râm* "{{user}} đáng yêu ơi, em có muốn bôi kem chống nắng giúp anh không?"
+
+**Rindo:** *Ôm phao thiên nga nhăn nhó* "Anh im đi Ran. {{user}}, tí đi lướt sóng với tao."
+
+**Mikey:** *Mặc quần đùi taiyaki, ôm phao hồng lờ đờ nhìn bạn* "{{user}}, tôi đói. Taiyaki của tôi đâu?"
+
+---
+📊 [❤️ Độ thân mật chung: 40% | 💭 Trạng thái Bonten: Vừa đến bãi biển, nháo nhào]`;
+
+        let apiKey = "";
+        let chatHistory = [];
+        let userData = {};
+
+        function openApiModal() {
+            const name = document.getElementById('user-name').value.trim();
+            if(!name) { alert("Vui lòng nhập tên của bạn!"); return; }
+            document.getElementById('api-modal').style.display = 'flex';
+        }
+
+        function startChat() {
+            apiKey = document.getElementById('api-key').value.trim();
+            if(!apiKey) { alert("Vui lòng nhập Gemini API Key!"); return; }
+
+            userData = {
+                name: document.getElementById('user-name').value.trim(),
+                appearance: document.getElementById('user-appearance').value.trim(),
+                personality: document.getElementById('user-personality').value.trim()
+            };
+
+            document.getElementById('api-modal').style.display = 'none';
+            document.getElementById('setup-screen').style.display = 'none';
+            document.getElementById('chat-screen').style.display = 'flex';
+
+            // Khởi tạo tin nhắn đầu tiên
+            const formattedFirstMsg = FIRST_MESSAGE.replace(/\{\{user\}\}/g, userData.name);
+            appendMessage('bot', formattedFirstMsg);
+            
+            // Lưu lịch sử
+            chatHistory.push({
+                role: "user",
+                parts: [{ text: `[Thông tin người chơi]: Tên: ${userData.name}, Ngoại hình: ${userData.appearance}, Tính cách: ${userData.personality}` }]
+            });
+            chatHistory.push({
+                role: "model",
+                parts: [{ text: formattedFirstMsg }]
+            });
+        }
+
+        function appendMessage(sender, text) {
+            const container = document.getElementById('chat-messages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `msg ${sender}`;
+            msgDiv.innerHTML = text.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\*(.*?)\*/g, '<i>$1</i>');
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('user-msg');
+            const text = input.value.trim();
+            if(!text) return;
+
+            appendMessage('user', text);
+            input.value = '';
+
+            chatHistory.push({ role: "user", parts: [{ text: text }] });
+
+            // Gọi API Gemini
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        system_instruction: { parts: [{ text: SYSTEM_INSTRUCTION.replace(/\{\{user\}\}/g, userData.name) }] },
+                        contents: chatHistory
+                    })
+                });
+
+                const data = await response.json();
+                if(data.candidates && data.candidates[0].content) {
+                    const botReply = data.candidates[0].content.parts[0].text;
+                    appendMessage('bot', botReply);
+                    chatHistory.push({ role: "model", parts: [{ text: botReply }] });
+                } else {
+                    alert("Có lỗi xảy ra khi gọi Gemini API. Kiểm tra lại Key!");
+                }
+            } catch(e) {
+                alert("Lỗi kết nối: " + e.message);
+            }
+        }
+
+        function handleKeyPress(e) {
+            if(e.key === 'Enter') sendMessage();
+        }
+    </script>
+</body>
+</html>
